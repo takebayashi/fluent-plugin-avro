@@ -6,7 +6,8 @@ fluent-plugin-avro provides a formatter plugin for Fluentd.
 
 | Name | Description |
 | ---- | ----------- |
-| schema_file | filename of Avro schema |
+| `schema_file` | filename of Avro schema |
+| `schema_json` | JSON representation of Avro schema |
 
 ### Example
 
@@ -17,6 +18,9 @@ fluent-plugin-avro provides a formatter plugin for Fluentd.
   format avro
 
   schema_file /path/to/schema.avsc
+
+  ## You can use schema_json instead of schema_file
+  # schema_json {"type":"record","name":"example","namespace":"org.example","fields":[{"name":"message","type":"string"}]}
 </match>
 ```
 
