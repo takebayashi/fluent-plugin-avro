@@ -5,11 +5,18 @@ module Fluent
     class AvroFormatter < Formatter
       Fluent::Plugin.register_formatter('avro', self)
 
-      config_param :schema_file, :string
+      config_param :schema_file, :string, :default => nil
+      config_param :schema_json, :string, :default => nil
 
       def configure(conf)
         super
-        @schema = Avro::Schema.parse(File.read(@schema_file))
+        if not (@schema_json.nil? ^ @schema_file.nil?) then
+          raise Fluent::ConfigError, 'schema_json or schema_file (but not both) is required'
+        end
+        if @schema_json.nil? then
+          @schema_json = File.read(@schema_file)
+        end
+        @schema = Avro::Schema.parse(@schema_json)
       end
 
       def format(tag, time, record)
