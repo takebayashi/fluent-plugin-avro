@@ -1,5 +1,7 @@
 # fluent-plugin-avro
 
+[![Build Status](https://travis-ci.org/takebayashi/fluent-plugin-avro.svg)](https://travis-ci.org/takebayashi/fluent-plugin-avro)
+
 fluent-plugin-avro provides a formatter plugin for Fluentd.
 
 ## Configurations
