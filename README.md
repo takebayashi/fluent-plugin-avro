@@ -6,6 +6,8 @@ fluent-plugin-avro provides a formatter plugin for Fluentd.
 
 ## Configurations
 
+Either `schema_file` or `schema_json` is required.
+
 | Name | Description |
 | ---- | ----------- |
 | `schema_file` | filename of Avro schema |
