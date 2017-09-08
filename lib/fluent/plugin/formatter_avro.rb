@@ -22,7 +22,8 @@ module Fluent
       def format(tag, time, record)
         writer = Avro::IO::DatumWriter.new(@schema)
         buffer = StringIO.new
-        encoder = Avro::IO::BinaryEncoder.new(buffer)
+        encoder = Avro::DataFile::Writer.new(buffer, writer, @schema)
+
         writer.write(record, encoder)
         buffer.string
       end
