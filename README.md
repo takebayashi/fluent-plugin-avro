@@ -17,11 +17,12 @@ Either `schema_file` or `schema_json` is required.
 
 ```
 <match example.avro>
-  type file
+  @type file
   path /path/to/output
-  format avro
-
-  schema_file /path/to/schema.avsc
+  <formatter>
+    @type avro
+    schema_file /path/to/schema.avsc
+  </formatter>
 
   ## You can use schema_json instead of schema_file
   # schema_json {"type":"record","name":"example","namespace":"org.example","fields":[{"name":"message","type":"string"}]}

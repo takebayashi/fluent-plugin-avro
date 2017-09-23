@@ -1,7 +1,8 @@
 require 'avro'
+require 'fluent/plugin/formatter'
 
 module Fluent
-  module TextFormatter
+  module Plugin
     class AvroFormatter < Formatter
       Fluent::Plugin.register_formatter('avro', self)
 

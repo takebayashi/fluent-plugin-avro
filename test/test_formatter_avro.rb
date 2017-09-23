@@ -1,10 +1,10 @@
 require_relative 'helper'
-require 'fluent/formatter'
+require 'fluent/plugin/formatter'
 require 'fluent/plugin/formatter_avro'
 
 class AvroFormatterTest < ::Test::Unit::TestCase
   def setup
-    @formatter = Fluent::Plugin.new_formatter('avro')
+    @formatter = Fluent::Test::Driver::Formatter.new(Fluent::Plugin::AvroFormatter)
     conf = {
       'schema_json' => %q!
         {
@@ -23,7 +23,7 @@ class AvroFormatterTest < ::Test::Unit::TestCase
 
   def test_format
     record = {'foo' => 'bar', 'baz' => 0}
-    formatted = @formatter.format('example.tag', Fluent::Engine.now, record)
+    formatted = @formatter.instance.format('example.tag', Fluent::Engine.now, record)
     assert_equal("\u0006bar\u0000", formatted)
   end
 end
