@@ -18,13 +18,13 @@ module Fluent
           @schema_json = File.read(@schema_file)
         end
         @schema = Avro::Schema.parse(@schema_json)
+        @writer = Avro::IO::DatumWriter.new(@schema)
       end
 
       def format(tag, time, record)
-        writer = Avro::IO::DatumWriter.new(@schema)
         buffer = StringIO.new
         encoder = Avro::IO::BinaryEncoder.new(buffer)
-        writer.write(record, encoder)
+        @writer.write(record, encoder)
         buffer.string
       end
     end
