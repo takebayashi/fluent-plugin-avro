@@ -23,7 +23,7 @@ module Fluent
           @schema_json = File.read(@schema_file)
         end
         if (@schema_json.nil? && !@schema_url.nil?) then
-          @schema_json = fetchSchema(@schema_url,@schema_url_key)
+          @schema_json = fetch_schema(@schema_url,@schema_url_key)
         end
         @schema = Avro::Schema.parse(@schema_json)
         @writer = Avro::IO::DatumWriter.new(@schema)
@@ -36,26 +36,37 @@ module Fluent
           @writer.write(record, encoder)
         rescue => e
           raise e if schema_url.nil?
-          @schema_json = fetchSchema(@schema_url,@schema_url_key)
-          @schema = Avro::Schema.parse(@schema_json)
-          @writer = Avro::IO::DatumWriter.new(@schema)
-          @writer.write(record, encoder)
+          schema_changed = false
+          begin
+            new_schema_json = fetch_schema(@schema_url,@schema_url_key)
+            new_schema = Avro::Schema.parse(@schema_json)
+            schema_changed = (new_schema_json == @schema_json)
+            @schema_json = new_schema_json
+            @schema = new_schema
+          rescue
+          end
+          if schema_changed then
+            @writer = Avro::IO::DatumWriter.new(@schema)
+            @writer.write(record, encoder)
+          else
+            raise e
+          end
         end
         buffer.string
       end
 
-      def fetchURL(url)
+      def fetch_url(url)
         uri = URI.parse(url)
         response = Net::HTTP.get_response uri
         response.body
       end
 
-      def fetchSchema(url,schema_key)
-        responseBody = fetchURL(url)
+      def fetch_schema(url,schema_key)
+        response_body = fetch_url(url)
         if schema_key.nil? then
-          return responseBody
+          return response_body
         else
-          return JSON.parse(responseBody)[schema_key]
+          return JSON.parse(response_body)[schema_key]
         end
       end
     end
