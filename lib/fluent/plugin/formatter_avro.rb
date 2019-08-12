@@ -19,11 +19,11 @@ module Fluent
         if not((@schema_json.nil? ? 0 : 1)+(@schema_file.nil? ? 0:1)+(@schema_url.nil? ? 0:1) == 1) then
           raise Fluent::ConfigError, 'schema_json, schema_file, or schema_url is required, but not multiple!'
         end
-        if @schema_json.nil? && not @schena_file.nil? then
+        if @schema_json.nil? && not @schema_file.nil? then
           @schema_json = File.read(@schema_file)
         end
-        if @schema_json.nil? && not @schena_url.nil? then
-          @schema_json = fetchSchema(@schena_url,@schema_url_key)
+        if @schema_json.nil? && not @schema_url.nil? then
+          @schema_json = fetchSchema(@schema_url,@schema_url_key)
         end
         @schema = Avro::Schema.parse(@schema_json)
         @writer = Avro::IO::DatumWriter.new(@schema)
@@ -36,7 +36,7 @@ module Fluent
           @writer.write(record, encoder)
         rescue => e
           raise e if schema_url.nil?
-          @schema_json = fetchSchema(@schena_url,@schema_url_key)
+          @schema_json = fetchSchema(@schema_url,@schema_url_key)
           @schema = Avro::Schema.parse(@schema_json)
           @writer = Avro::IO::DatumWriter.new(@schema)
           @writer.write(record, encoder)
