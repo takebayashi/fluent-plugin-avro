@@ -29,7 +29,7 @@ Either `schema_file`, `schema_json`, or `schema_url` is required.
   ## You can use schema_json instead of schema_file
   # schema_json {"type":"record","name":"example","namespace":"org.example","fields":[{"name":"message","type":"string"}]}
   ## You can also use schema_url to fetch from a schema registry
-  # schema_url http://localhost:8081/subjects/prod/latest
+  # schema_url http://localhost:8081/subjects/prod/versions/latest
   # If your URL adds metadata around the schema, schema_url_key can be used to pull that out. If your response body was like this:
   # {"subject":"prod","version":2,"id":2,"schema":"{\"type\":\"record\",\"name\":\"example\",\"namespace\":\"org.example\",\"fields\":[{\"name\":\"message\",\"type\":\"string\"}]}"}
   # Then the below line would extract that out
