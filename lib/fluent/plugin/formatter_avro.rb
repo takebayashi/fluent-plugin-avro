@@ -16,7 +16,7 @@ module Fluent
 
       def configure(conf)
         super
-        if not((@schema_json.nil? ? 0 : 1)+(@schema_file.nil? ? 0:1)+(@schema_url.nil? ? 0:1) == 1) then
+        if not ((@schema_json.nil? ? 0 : 1) + (@schema_file.nil? ? 0 : 1) + (@schema_url.nil? ? 0 : 1) == 1) then
           raise Fluent::ConfigError, 'schema_json, schema_file, or schema_url is required, but not multiple!'
         end
         if (@schema_json.nil? && !@schema_file.nil?) then
