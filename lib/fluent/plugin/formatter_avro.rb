@@ -39,7 +39,7 @@ module Fluent
           schema_changed = false
           begin
             new_schema_json = fetch_schema(@schema_url,@schema_url_key)
-            new_schema = Avro::Schema.parse(@schema_json)
+            new_schema = Avro::Schema.parse(@new_schema_json)
             schema_changed = (new_schema_json == @schema_json)
             @schema_json = new_schema_json
             @schema = new_schema
