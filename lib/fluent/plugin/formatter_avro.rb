@@ -3,7 +3,7 @@ require 'fluent/plugin/formatter'
 require 'net/http'
 require 'uri'
 require 'json'
-
+MAGIC_BYTE = [0].pack("C").freeze
 module Fluent
   module Plugin
     class AvroFormatter < Formatter
@@ -13,12 +13,16 @@ module Fluent
       config_param :schema_json, :string, :default => nil
       config_param :schema_url, :string, :default => nil
       config_param :schema_url_key, :string, :default => nil
+	  config_param :schema_id, :integer, :default => nil
 
       def configure(conf)
         super
         if not ((@schema_json.nil? ? 0 : 1) + (@schema_file.nil? ? 0 : 1) + (@schema_url.nil? ? 0 : 1) == 1) then
           raise Fluent::ConfigError, 'schema_json, schema_file, or schema_url is required, but not multiple!'
         end
+			if ((@schema_id.nil? ? 0 : 1) == 0) then
+		 raise Fluent::ConfigError, 'schema_id is required!'
+		end
         if (@schema_json.nil? && !@schema_file.nil?) then
           @schema_json = File.read(@schema_file)
         end
@@ -31,7 +35,10 @@ module Fluent
 
       def format(tag, time, record)
         buffer = StringIO.new
-        encoder = Avro::IO::BinaryEncoder.new(buffer)
+        encoder = Avro::IO::BinaryEncoder.new(buffer)	
+		encoder.write(MAGIC_BYTE)
+	    schema_id = @schema_id
+	    encoder.write([schema_id].pack("N"))	
         begin
           @writer.write(record, encoder)
         rescue => e

@@ -1,4 +1,5 @@
-# fluent-plugin-avro
+# fluent-plugin-avro-Confluent
+
 
 [![Build Status](https://travis-ci.org/takebayashi/fluent-plugin-avro.svg)](https://travis-ci.org/takebayashi/fluent-plugin-avro)
 
@@ -14,6 +15,7 @@ Either `schema_file`, `schema_json`, or `schema_url` is required.
 | `schema_json` | JSON representation of Avro schema |
 | `schema_url`  | URL to JSON representation of Avro schema |
 | `schema_url_key`  | JSON key under response body of where the JSON representation of Avro schema is |
+| `schema_id`  | SchemaRegistry Id to be added to avro file |
 
 ### Example
 
