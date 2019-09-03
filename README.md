@@ -1,4 +1,4 @@
-# fluent-plugin-avro-Confluent
+# fluent-plugin-avro-confluent
 
 
 [![Build Status](https://travis-ci.org/takebayashi/fluent-plugin-avro.svg)](https://travis-ci.org/takebayashi/fluent-plugin-avro)
